@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Buddy</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <h1 class="logo">Study Buddy</h1>
+            <p class="tagline">Find the right WashU study spot for you & start your lock in! </p>
+        </div>
+    </header>
+
+    <div class="app-layout">
+        <aside class="sidebar" aria-labelledby="sidebar-heading">
+            <h2 id="sidebar-heading">Study tools</h2>
+            <p class="sidebar-help">Drag a tool into the dashboard below your result to kickstart your studying!</p>
+
+            <div class="tool-tile" draggable="true" data-tool="quote">
+                A fruit for thought
+            </div>
+
+            <div class="tool-tile" draggable="true" data-tool="pomodoro">
+                Pomodoro timer
+            </div>
+
+            <div class="tool-tile" draggable="true" data-tool="checklist">
+                Task checklist
+            </div>
+        </aside>
+
+        <main>
+            <section class="card form-card" aria-labelledby="form-heading">
+            <h2 id="form-heading">What do you need right now?</h2>
+ 
+            <form id="preferences-form" novalidate>
+    
+                <!-- pick noise level-->
+                <fieldset>
+                    <legend>Noise level</legend>
+                    <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="noise" value="silent" checked />
+                        <span>Silent</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="noise" value="moderate" />
+                        <span>Moderate</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="noise" value="lively" />
+                        <span>Lively</span>
+                    </label>
+                    </div>
+                </fieldset>
+
+                <!-- pick amount of people -->
+                <fieldset>
+                    <legend>Studying with others?</legend>
+                    <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="group" value="solo" checked />
+                        <span>Solo</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="group" value="group" />
+                        <span>Group</span>
+                    </label>
+                    </div>
+                </fieldset>
+
+                <!-- pick outlets -->
+                <fieldset>
+                    <legend>Other needs</legend>
+                    <label class="checkbox-label">
+                    <input type="checkbox" id="outlets" name="outlets" />
+                    <span>I need an outlet</span>
+                    </label>
+                </fieldset>
+
+                <button type="submit" id="find-button" class="button-primary">
+                    Find My Spot
+                </button>
+            </form>
+        </section>
+
+        <div id="error-message" class="error-banner hidden" role="alert" aria-live="polite">
+            <span id="error-text"></span>
+        </div>
+
+        <!-- loading indicator -->
+        <div id="loading" class="loading hidden" aria-live="polite">
+            <div class="spinner" aria-hidden="true"></div>
+            <p>Finding the best spot for you…</p>
+        </div>
+
+        <section id="results" class="results hidden" aria-labelledby="results-heading">
+        <h2 id="results-heading" class="results-heading">Your recommendation</h2>
+ 
+        <div class="results-grid">
+            <!-- weather card -->
+            <div class="card weather-card" aria-label="Current weather">
+                <p class="card-label">Right now outside</p>
+                <p id="weather-icon" class="weather-icon" aria-hidden="true"></p>
+                <p id="weather-description" class="weather-main"></p>
+                <p id="weather-details" class="weather-details"></p>
+            </div>
+    
+            <!-- spot card -->
+            <div class="card spot-card" aria-label="Recommended study spot">
+                <p class="card-label">Best spot for you</p>
+                <h3 id="spot-name" class="spot-name"></h3>
+                <p id="spot-description" class="spot-description"></p>
+                <div id="spot-tags" class="spot-tags" aria-label="Spot features"></div>
+                <p id="spot-distance" class="spot-distance"></p>
+                <p id="spot-travel-time" class="spot-travel-time"></p>
+                <p id="spot-hours" class="spot-hours"></p>
+                <p id="spot-visit-count" class="spot-visit-count"></p>
+                <a id="spot-map-link" class="spot-map-link" href="#" target="_blank" rel="noopener">Open in Google Maps</a>
+            </div>
+    
+        </div>
+      </section>
+
+        <section id="dashboard" class="dashboard hidden" aria-labelledby="dashboard-heading">
+            <h2 id="dashboard-heading" class="results-heading">Build your dashboard</h2>
+            <div id="feature-drop-zone" class="card feature-drop-zone" aria-label="Drop a study tool here">
+                <p id="feature-drop-message">Add a study tool here</p>
+                <p class="drop-help">Drag a study tool from the sidebar and drop it here</p>
+            </div>
+
+            <div id="dashboard-tools"></div>
+        </section>
+        </main>
+    </div>
+    
+    <!-- study tools -->
+    <div id="tool-templates" class="hidden">
+        <div id="quote-tool" class="card quote-card" aria-label="Motivational quote">
+            <p class="card-label">A thought to get you started</p>
+            <blockquote id="quote-text" class="quote-text"></blockquote>
+            <p id="quote-author" class="quote-author"></p>
+        </div>
+
+        <div id="pomodoro-tool" class="card pomodoro-card" aria-label="Pomodoro timer">
+            <p class="card-label">Time to lock in! · Pomodoro timer</p>
+            <p id="pomodoro-mode" class="pomodoro-mode">Focus time</p>
+            <p id="pomodoro-time" class="pomodoro-time">25:00</p>
+            <div class="pomodoro-buttons">
+                <button type="button" id="pomodoro-start" class="button-secondary">Start</button>
+                <button type="button" id="pomodoro-pause" class="button-secondary">Pause</button>
+                <button type="button" id="pomodoro-reset" class="button-secondary">Reset</button>
+            </div>
+            <button type="button" id="pomodoro-switch" class="button-link">Switch to break</button>
+        </div>
+
+        <div id="checklist-tool" class="card checklist-card" aria-label="Task checklist">
+            <p class="card-label">What do you want to accomplish today?</p>
+            <form id="checklist-form" class="checklist-form">
+                <input type="text" id="checklist-input" placeholder="Add a task" aria-label="Add a task">
+                <button type="submit" class="button-secondary">Add</button>
+            </form>
+            <ul id="checklist-items" class="checklist-items"></ul>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+      <p>Built for WashU students · Uses your location & live weather</p>
+    </footer>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
