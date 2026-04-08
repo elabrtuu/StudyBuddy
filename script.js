@@ -501,6 +501,14 @@ const featureDropZone = document.getElementById("feature-drop-zone");
 const featureDropMessage = document.getElementById("feature-drop-message");
 const dashboardTools = document.getElementById("dashboard-tools");
 
+function updateDropZoneVisibility() {
+    const allToolsAdded = Array.from(document.querySelectorAll(".tool-tile")).every(tile =>
+      dashboardTools.contains(document.getElementById(`${tile.dataset.tool}-tool`))
+    );
+
+    featureDropZone.classList.toggle("hidden", allToolsAdded);
+}
+
 function addToolToDashboard(toolName) {
     const tool = document.getElementById(`${toolName}-tool`);
     if (!tool || dashboardTools.contains(tool)) return;
@@ -513,6 +521,8 @@ function addToolToDashboard(toolName) {
       tile.setAttribute("draggable", "false");
       tile.classList.add("tool-tile-disabled");
     }
+
+    updateDropZoneVisibility();
 }
 
 function setupChecklist() {
